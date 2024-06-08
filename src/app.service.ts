@@ -11,10 +11,17 @@ import {
   MoreThanOrEqual,
 } from 'typeorm';
 import { Entry } from './entities/entry.entity';
+import axios from 'axios';
+import { Attachment } from './entities/attachment.entity';
+import { ConfigService } from '@nestjs/config';
+import { AppConfig } from './configuration';
 
 @Injectable()
 export class AppService {
-  constructor(private dataSource: DataSource) {}
+  constructor(
+    private dataSource: DataSource,
+    private configService: ConfigService<AppConfig, true>,
+  ) {}
 
   async list(options: ListBodyDto) {
     const { sort, filter } = options;
@@ -64,5 +71,35 @@ export class AppService {
       relations: { author: true, reactions: true, attachments: true },
     });
     return entries;
+  }
+
+  async getImage(url: string, attachmentId: string) {
+    const response = await axios
+      .get(url, { responseType: 'stream' })
+      .catch(async () => {
+        const imageUrl = this.configService.get('imageUrl');
+        const newDataResponse = await axios.post(
+          imageUrl,
+          {
+            attachment_urls: [url],
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: this.configService.get('token'),
+            },
+          },
+        );
+        const newUrl = newDataResponse?.data?.refreshed_urls?.at(0)?.refreshed;
+
+        if (typeof newUrl === 'string') {
+          await this.dataSource
+            .getRepository(Attachment)
+            .update({ id: attachmentId }, { url: newUrl });
+        }
+
+        return axios.get(newUrl, { responseType: 'stream' });
+      });
+    return response;
   }
 }

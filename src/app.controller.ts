@@ -1,16 +1,11 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { PopulateService } from './populate.service';
-import * as fs from 'fs';
-import { Entry } from './type';
 import { SortFields, SortOrder } from './dto/listentries.dto';
+import { Response } from 'express';
 
 @Controller('app')
 export class AppController {
-  constructor(
-    private appService: AppService,
-    private populateService: PopulateService,
-  ) {}
+  constructor(private appService: AppService) {}
 
   @Get()
   list() {
@@ -22,10 +17,22 @@ export class AppController {
     });
   }
 
-  @Post()
-  async populate() {
-    const d: Entry[] = JSON.parse(fs.readFileSync('./data.json', 'utf8'));
-    await this.populateService.populate(d);
-    return [];
+  @Get('/image')
+  async url(
+    @Query('url') url: string,
+    @Query('attachmentId') attachmentId: string,
+    @Res() response: Response,
+  ) {
+    if (!url || !attachmentId) {
+      return response.status(400).send('Bad request');
+    }
+
+    const image = await this.appService.getImage(url, attachmentId);
+
+    if (!image) {
+      return response.status(404).send('Not found');
+    }
+
+    return image.data.pipe(response);
   }
 }
