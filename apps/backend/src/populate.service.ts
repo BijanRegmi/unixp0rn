@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Entry as TEntry } from './type';
+import { ContentType, RawEntry } from '@unixp0rn/types';
 import { DataSource } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { Entry } from './entities/entry.entity';
 import { Reaction } from './entities/reaction.entity';
 import { Attachment } from './entities/attachment.entity';
 import * as cliProgress from 'cli-progress';
-import { Cron } from '@nestjs/schedule';
+// import { Cron } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from './configuration';
 
@@ -23,7 +23,7 @@ export class PopulateService {
     private configService: ConfigService<AppConfig, true>,
   ) {}
 
-  async populate(data: TEntry[]) {
+  async populate(data: RawEntry[]) {
     const count = await this.dataSource.getRepository(Entry).count();
     bar.start(count + data.length, count);
 
@@ -67,7 +67,7 @@ export class PopulateService {
               id: attachment.id,
               filename: attachment.filename,
               url: attachment.url,
-              type: attachment.content_type || 'unknown',
+              type: attachment.content_type || ContentType.UNKNOWN,
             });
           }),
         });
@@ -108,10 +108,13 @@ export class PopulateService {
 
     const headers = new Headers();
     headers.append('authorization', this.configService.get('token'));
-    const res: TEntry[] | undefined = await fetch(`${dataUrl}${id}&limit=100`, {
-      method: 'GET',
-      headers,
-    })
+    const res: RawEntry[] | undefined = await fetch(
+      `${dataUrl}${id}&limit=100`,
+      {
+        method: 'GET',
+        headers,
+      },
+    )
       .then((res) => res.json())
       .catch((err) => {
         console.error(err);

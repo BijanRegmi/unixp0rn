@@ -1,11 +1,11 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { SortFields, SortOrder } from './dto/listentries.dto';
+import { SortFields, SortOrder } from "@unixp0rn/types"
 import { Response } from 'express';
 
 @Controller('app')
 export class AppController {
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService) { }
 
   @Get()
   list() {

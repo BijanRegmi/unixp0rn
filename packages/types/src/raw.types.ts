@@ -1,15 +1,15 @@
-export type Entry = {
+export type RawEntry = {
   type: number;
   channel_id: string;
   content: string;
-  attachments: Attachment[];
+  attachments: RawAttachment[];
   embeds: Embed[];
   timestamp: Date;
   edited_timestamp: Date | null;
   flags: number;
   components: any[];
   id: string;
-  author: Author;
+  author: RawAuthor;
   mentions: any[];
   mention_roles: any[];
   pinned: boolean;
@@ -22,7 +22,7 @@ export type Entry = {
   referenced_message?: ReferencedMessage;
 };
 
-export type Attachment = {
+export type RawAttachment = {
   id: string;
   filename: string;
   size: number;
@@ -48,7 +48,7 @@ export enum ContentType {
   UNKNOWN = 'unknown',
 }
 
-export type Author = {
+export type RawAuthor = {
   id: string;
   username: string;
   avatar: null | string;
@@ -63,12 +63,12 @@ export type Author = {
   clan: null;
 };
 
-export type AvatarDecorationData = {
+type AvatarDecorationData = {
   asset: string;
   sku_id: string;
 };
 
-export type Embed = {
+type Embed = {
   type: string;
   url: string;
   title: string;
@@ -78,11 +78,11 @@ export type Embed = {
   content_scan_version: number;
 };
 
-export type Provider = {
+type Provider = {
   name: string;
 };
 
-export type Thumbnail = {
+type Thumbnail = {
   url: string;
   proxy_url: string;
   width: number;
@@ -91,14 +91,14 @@ export type Thumbnail = {
   placeholder_version: number;
 };
 
-export type MessageReference = {
+type MessageReference = {
   type: number;
   channel_id: string;
   message_id: string;
   guild_id: string;
 };
 
-export type Reaction = {
+type Reaction = {
   emoji: Emoji;
   count: number;
   count_details: CountDetails;
@@ -109,28 +109,28 @@ export type Reaction = {
   burst_count: number;
 };
 
-export type CountDetails = {
+type CountDetails = {
   burst: number;
   normal: number;
 };
 
-export type Emoji = {
+type Emoji = {
   id: null | string;
   name: string;
 };
 
-export type ReferencedMessage = {
+type ReferencedMessage = {
   type: number;
   channel_id: string;
   content: string;
-  attachments: Attachment[];
+  attachments: RawAttachment[];
   embeds: any[];
   timestamp: Date;
   edited_timestamp: Date | null;
   flags: number;
   components: any[];
   id: string;
-  author: Author;
+  author: RawAuthor;
   mentions: any[];
   mention_roles: any[];
   pinned: boolean;
@@ -139,7 +139,7 @@ export type ReferencedMessage = {
   thread?: Thread;
 };
 
-export type Thread = {
+type Thread = {
   id: string;
   type: number;
   last_message_id: string;
@@ -159,7 +159,7 @@ export type Thread = {
   member_ids_preview: string[];
 };
 
-export type ThreadMetadata = {
+type ThreadMetadata = {
   archived: boolean;
   archive_timestamp: Date;
   auto_archive_duration: number;

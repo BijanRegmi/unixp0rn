@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Entry } from './entry.entity';
 import { BaseEntity } from './base.entity';
-import { ContentType } from 'src/type';
+import { ContentType } from '@unixp0rn/types';
 
 @Entity()
 export class Attachment extends BaseEntity {

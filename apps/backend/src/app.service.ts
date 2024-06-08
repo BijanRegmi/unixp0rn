@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ListBodyDto, SortFields } from './dto/listentries.dto';
+import { ListBodyDto, SortFields } from '@unixp0rn/types'
 import {
   Between,
   DataSource,
@@ -21,7 +21,7 @@ export class AppService {
   constructor(
     private dataSource: DataSource,
     private configService: ConfigService<AppConfig, true>,
-  ) {}
+  ) { }
 
   async list(options: ListBodyDto) {
     const { sort, filter } = options;
@@ -66,8 +66,8 @@ export class AppService {
       order: !sort
         ? undefined
         : sort?.field === SortFields.REACTION_COUNT
-        ? { reactionCount: sort.order }
-        : { timestamp: sort.order },
+          ? { reactionCount: sort.order }
+          : { timestamp: sort.order },
       relations: { author: true, reactions: true, attachments: true },
     });
     return entries;
