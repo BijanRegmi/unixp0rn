@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ListBodyDto, SortFields } from '@unixp0rn/types'
+import { ListBodyDto, SortFields } from '@unixp0rn/types';
 import {
   Between,
   DataSource,
@@ -21,7 +21,7 @@ export class AppService {
   constructor(
     private dataSource: DataSource,
     private configService: ConfigService<AppConfig, true>,
-  ) { }
+  ) {}
 
   async list(options: ListBodyDto) {
     const { sort, filter } = options;
