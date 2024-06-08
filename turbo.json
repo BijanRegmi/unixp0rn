@@ -13,6 +13,8 @@
       "persistent": true,
       "cache": false
     },
-    "lint": {}
+    "lint": {
+      "cache": false
+    }
   }
 }
