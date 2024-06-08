@@ -1,5 +1,6 @@
 {
   "extends": "@unixp0rn/tsconfig/base.json",
+  "exclude": ["dist"],
   "compilerOptions": {
     "module": "commonjs",
     "emitDecoratorMetadata": true,
@@ -7,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "incremental": true
   }
 }
