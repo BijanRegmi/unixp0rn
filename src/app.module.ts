@@ -6,6 +6,7 @@ import configuration, { AppConfig } from './configuration';
 import { PopulateService } from './populate.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import entities from './entities';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import entities from './entities';
         };
       },
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService, PopulateService],
