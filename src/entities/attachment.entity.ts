@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Entry } from './entry.entity';
 import { BaseEntity } from './base.entity';
+import { ContentType } from 'src/type';
 
 @Entity()
 export class Attachment extends BaseEntity {
@@ -26,7 +27,7 @@ export class Attachment extends BaseEntity {
   url: string;
 
   @Column({ type: String })
-  type: string;
+  type: ContentType;
 
   @ManyToOne(() => Entry, (entry) => entry.attachments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'entryId' })

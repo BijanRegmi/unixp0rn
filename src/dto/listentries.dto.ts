@@ -7,6 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ContentType } from 'src/type';
 
 export enum SortOrder {
   ASC = 'ASC',
@@ -59,11 +60,6 @@ class NumberFilter {
   @ValidateNested()
   @IsOptional()
   between?: NumberRange;
-}
-
-enum ContentType {
-  VIDEO = 'VIDEO',
-  IMAGE = 'IMAGE',
 }
 
 class ListFilter {
