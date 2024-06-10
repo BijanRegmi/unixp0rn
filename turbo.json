@@ -3,7 +3,11 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["./apps/backend/dist/**", "./packages/types/dist/**"]
+      "outputs": [
+        "./apps/backend/dist/**",
+        "./packages/types/dist/**",
+        "./apps/frontend/dist/**"
+      ]
     },
     "start": {
       "dependsOn": ["build"]
