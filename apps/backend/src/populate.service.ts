@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ContentType, RawEntry } from '@unixp0rn/types';
+import { RawEntry } from '@unixp0rn/types';
 import { DataSource } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { Entry } from './entities/entry.entity';
@@ -21,7 +21,7 @@ export class PopulateService {
   constructor(
     private dataSource: DataSource,
     private configService: ConfigService<AppConfig, true>,
-  ) {}
+  ) { }
 
   async populate(data: RawEntry[]) {
     const count = await this.dataSource.getRepository(Entry).count();
@@ -67,7 +67,7 @@ export class PopulateService {
               id: attachment.id,
               filename: attachment.filename,
               url: attachment.url,
-              type: attachment.content_type || ContentType.UNKNOWN,
+              type: attachment.content_type || 'unknown',
             });
           }),
         });

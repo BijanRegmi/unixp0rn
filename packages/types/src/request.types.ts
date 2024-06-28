@@ -1,14 +1,8 @@
 import { ContentType } from './raw.types';
 
-export enum SortOrder {
-  ASC = 'ASC',
-  DESC = 'DESC',
-}
+export type SortOrder = 'ASC' | 'DESC';
 
-export enum SortFields {
-  REACTION_COUNT = 'Reaction_Count',
-  TIMESTAMP = 'Timestamp',
-}
+export type SortFields = 'Reaction_Count' | 'Timestamp';
 
 export interface ListSort {
   field: SortFields;

@@ -36,17 +36,16 @@ export type RawAttachment = {
   placeholder_version: number;
 };
 
-export enum ContentType {
-  IMAGE_PNG = 'image/png',
-  IMAGE_JPEG = 'image/jpeg',
-  IMAGE_WEBP = 'image/webp',
-  IMAGE_GIF = 'image/gif',
-  VIDEO_MP4 = 'video/mp4',
-  VIDEO_WEBM = 'video/webm',
-  VIDOE_MATROSKA = 'video/x-matroska',
-  VIDEO_QUICKTIME = 'video/quicktime',
-  UNKNOWN = 'unknown',
-}
+export type ContentType =
+  | 'image/png'
+  | 'image/jpeg'
+  | 'image/webp'
+  | 'image/gif'
+  | 'video/mp4'
+  | 'video/webm'
+  | 'video/x-matroska'
+  | 'video/quicktime'
+  | 'unknown';
 
 export type RawAuthor = {
   id: string;

@@ -16,7 +16,7 @@ export type AttachmentResponse = {
 export type ReactionResponse = {
   id: string;
   name: string;
-  count: string;
+  count: number;
   entryId: string;
 };
 
@@ -27,6 +27,6 @@ export type ListResponse = {
   reactionCount: number;
   author: AuthorResponse;
   authorId: string;
-  attachments: AttachmentResponse;
-  reactions: ReactionResponse;
+  attachments: AttachmentResponse[];
+  reactions: ReactionResponse[];
 };
