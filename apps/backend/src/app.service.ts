@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { ListBodyDto, SortFields } from '@unixp0rn/types';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ListBodyDto } from '@unixp0rn/types';
 import {
   Between,
   DataSource,
@@ -21,7 +21,7 @@ export class AppService {
   constructor(
     private dataSource: DataSource,
     private configService: ConfigService<AppConfig, true>,
-  ) {}
+  ) { }
 
   async list(options: ListBodyDto) {
     const { sort, filter } = options;
@@ -65,7 +65,7 @@ export class AppService {
       take: options.take,
       order: !sort
         ? undefined
-        : sort?.field === SortFields.REACTION_COUNT
+        : sort?.field === 'Reaction_Count'
           ? { reactionCount: sort.order }
           : { timestamp: sort.order },
       relations: { author: true, reactions: true, attachments: true },
@@ -73,15 +73,22 @@ export class AppService {
     return entries;
   }
 
-  async getImage(url: string, attachmentId: string) {
+  async getImage(attachmentId: string) {
+    const attachment = await this.dataSource
+      .getRepository(Attachment)
+      .findOne({ where: { id: attachmentId } });
+    if (!attachment) {
+      throw new NotFoundException('Attachment not found');
+    }
+
     const response = await axios
-      .get(url, { responseType: 'stream' })
+      .get(attachment.url, { responseType: 'stream' })
       .catch(async () => {
         const imageUrl = this.configService.get('imageUrl');
         const newDataResponse = await axios.post(
           imageUrl,
           {
-            attachment_urls: [url],
+            attachment_urls: [attachment.url],
           },
           {
             headers: {

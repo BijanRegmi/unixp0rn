@@ -1,33 +1,63 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { SortFields, SortOrder } from '@unixp0rn/types';
+import { ListBodyDto, ListResponse } from '@unixp0rn/types';
 import { Response } from 'express';
 
 @Controller('app')
 export class AppController {
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService) { }
 
   @Get()
-  list() {
-    return this.appService.list({
-      skip: 0,
-      take: 10,
-      sort: { field: SortFields.REACTION_COUNT, order: SortOrder.ASC },
-      filter: { reactionCount: { between: { start: 50, end: 100 } } },
+  async list(@Query() query: ListBodyDto): Promise<ListResponse[]> {
+    if (typeof query.skip === 'string') {
+      query.skip = Number(query.skip);
+    }
+    if (typeof query.take === 'string') {
+      query.take = Number(query.take);
+    }
+    if (typeof query.filter === 'string') {
+      query.filter = JSON.parse(query.filter);
+    }
+    if (typeof query.sort === 'string') {
+      query.sort = JSON.parse(query.sort);
+    }
+    const entries = await this.appService.list(query);
+
+    return entries.map((e) => {
+      return {
+        id: e.id,
+        timestamp: e.timestamp,
+        content: e.content,
+        reactionCount: e.reactionCount,
+        author: { id: e.author.id, username: e.author.username },
+        authorId: e.authorId,
+        attachments: e.attachments.map((a) => ({
+          id: a.id,
+          url: a.url,
+          type: a.type,
+          filename: a.filename,
+          entryId: a.entryId,
+        })),
+        reactions: e.reactions.map((r) => ({
+          id: r.id,
+          name: r.name,
+          count: r.count,
+          entryId: r.entryId,
+        })),
+      };
     });
   }
 
   @Get('/image')
   async url(
-    @Query('url') url: string,
     @Query('attachmentId') attachmentId: string,
     @Res() response: Response,
   ) {
-    if (!url || !attachmentId) {
+    if (!attachmentId) {
       return response.status(400).send('Bad request');
     }
 
-    const image = await this.appService.getImage(url, attachmentId);
+    const image = await this.appService.getImage(attachmentId);
 
     if (!image) {
       return response.status(404).send('Not found');
