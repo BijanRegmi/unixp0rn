@@ -9,6 +9,8 @@ import * as cliProgress from 'cli-progress';
 // import { Cron } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from './configuration';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const bar = new cliProgress.SingleBar({
   format: 'Adding Entries | {bar} | {percentage}% | {value}/{total} Entries',
@@ -21,7 +23,7 @@ export class PopulateService {
   constructor(
     private dataSource: DataSource,
     private configService: ConfigService<AppConfig, true>,
-  ) { }
+  ) {}
 
   async populate(data: RawEntry[]) {
     const count = await this.dataSource.getRepository(Entry).count();
@@ -90,7 +92,15 @@ export class PopulateService {
     failed && Logger.log(`Failed to save ${failed} entries`, loggerCtx);
   }
 
-  // @Cron('*/10 * * * * *')
+  async init() {
+    const data: RawEntry = JSON.parse(
+      readFileSync(join(__dirname, '../data/init.json'), 'utf8'),
+    );
+    await this.populate([data]);
+    return data.id;
+  }
+
+  // @Cron('*/5 * * * * *')
   async populateNextEntries() {
     const lastEntry = await this.dataSource.getRepository(Entry).find({
       order: { timestamp: 'DESC' },
@@ -98,12 +108,16 @@ export class PopulateService {
       relations: { author: true, reactions: true, attachments: true },
     });
 
-    const id = lastEntry.pop()?.id;
+    let id = lastEntry.pop()?.id;
     const dataUrl = this.configService.get('dataUrl');
-
-    if (!id || !dataUrl) {
-      Logger.error('No entries found', loggerCtx);
+    if (!dataUrl) {
+      Logger.error('No URL found in config', loggerCtx);
       return;
+    }
+
+    if (!id) {
+      Logger.error('No entries found', loggerCtx);
+      id = await this.init();
     }
 
     const headers = new Headers();
