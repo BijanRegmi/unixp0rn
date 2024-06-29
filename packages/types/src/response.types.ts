@@ -16,6 +16,7 @@ export type AttachmentResponse = {
 export type ReactionResponse = {
   id: string;
   name: string;
+  url?: string;
   count: number;
   entryId: string;
 };

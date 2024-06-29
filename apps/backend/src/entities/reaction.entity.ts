@@ -20,6 +20,9 @@ export class Reaction extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
+  @Column({ type: String , nullable: true })
+  url: string | null;
+
   @Column({ type: String })
   name: string;
 

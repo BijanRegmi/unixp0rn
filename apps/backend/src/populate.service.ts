@@ -60,6 +60,9 @@ export class PopulateService {
           ),
           reactions: d.reactions.map((reaction) => {
             return new Reaction({
+              url: reaction.emoji.id
+                ? `https://cdn.discordapp.com/emojis/${reaction.emoji.id}.webp`
+                : null,
               name: reaction.emoji.name,
               count: reaction.count,
             });

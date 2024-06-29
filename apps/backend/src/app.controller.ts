@@ -40,6 +40,7 @@ export class AppController {
         })),
         reactions: e.reactions.map((r) => ({
           id: r.id,
+          url: r.url || undefined,
           name: r.name,
           count: r.count,
           entryId: r.entryId,
