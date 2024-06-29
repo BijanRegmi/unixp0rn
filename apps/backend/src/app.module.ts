@@ -18,9 +18,11 @@ import { join } from 'path';
       inject: [ConfigService],
       useFactory: (configService: ConfigService<AppConfig, true>) => {
         const url = configService.get('dbUrl');
+        const ssl = configService.get('dbSsl');
         return {
           type: 'postgres',
           synchronize: true,
+          ssl,
           url,
           entities,
         };
