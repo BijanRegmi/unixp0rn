@@ -66,6 +66,7 @@ export function Filters({ refetch }: { refetch: () => void }) {
           <div className="w-full flex items-center gap-4">
             <Label>Reaction Count</Label>
             <Input
+              className="focus-visible:ring-transparent"
               type="number"
               value={
                 filters?.reactionCount?.between?.start ||
@@ -94,6 +95,7 @@ export function Filters({ refetch }: { refetch: () => void }) {
             />
             <Label>to</Label>
             <Input
+              className="focus-visible:ring-transparent"
               type="number"
               value={
                 filters?.reactionCount?.between?.end ||
@@ -135,6 +137,21 @@ export function Filters({ refetch }: { refetch: () => void }) {
               }}
             />
           </div>
+          <div className="w-full flex items-center gap-4">
+            <Label>Author</Label>
+            <Input
+              type="text"
+              className="focus-visible:ring-transparent"
+              value={filters?.authorName || ''}
+              onChange={(e) => {
+                setFilters((f) => ({
+                  ...f,
+                  authorName: e.target.value || undefined,
+                }));
+              }}
+            />
+          </div>
+
           {filters?.authorId && (
             <div className="w-full flex items-center gap-4">
               <Label>AuthorId</Label>

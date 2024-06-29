@@ -5,7 +5,9 @@ export function TitleBar({ children }: { children: React.ReactNode }) {
         <h1 className="font-bold w-fit p-2 capitalize text-3xl border-black border rounded text-center align-middle">
           U
         </h1>
-        <h2 className="tracking-[1rem] font-thin text-xl">UNIX</h2>
+        <h2 className="tracking-[1rem] font-thin text-xl text-slate-700">
+          UNIXP*RN
+        </h2>
       </div>
       {children}
     </div>
