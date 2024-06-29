@@ -20,7 +20,7 @@ export function useEntries() {
   useEffect(() => {
     async function fn() {
       const entries: ListResponse[] = await fetch(
-        'http://localhost:3000/app?' +
+        '/app?' +
           new URLSearchParams({
             skip: (page * 10).toString(),
             take: '10',

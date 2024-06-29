@@ -7,6 +7,8 @@ import { PopulateService } from './populate.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import entities from './entities';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,6 +27,9 @@ import { ScheduleModule } from '@nestjs/schedule';
       },
     }),
     ScheduleModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../frontend/dist/'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, PopulateService],

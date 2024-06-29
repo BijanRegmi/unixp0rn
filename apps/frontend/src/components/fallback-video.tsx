@@ -14,7 +14,7 @@ export function FallbackVideo({ src, id }: { src: string; id: string }) {
   ) : (
     <video
       className="w-full rounded-md"
-      src={`http://localhost:3000/app/image?attachmentId=${id}`}
+      src={`/app/image?attachmentId=${id}`}
       controls
       muted={false}
     />
