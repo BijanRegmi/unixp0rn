@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ListBodyDto } from '@unixp0rn/types';
+import { ContentType, ListBodyDto } from '@unixp0rn/types';
 import {
   Between,
   DataSource,
   FindOptionsWhere,
   ILike,
+  In,
   LessThan,
   LessThanOrEqual,
   MoreThan,
@@ -15,6 +16,11 @@ import axios from 'axios';
 import { Attachment } from './entities/attachment.entity';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from './configuration';
+
+const contentTypeMapping: { video: ContentType[]; image: ContentType[] } = {
+  video: ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-matroska'],
+  image: ['image/png', 'image/gif', 'image/jpeg', 'image/webp', 'unknown'],
+};
 
 @Injectable()
 export class AppService {
@@ -37,7 +43,9 @@ export class AppService {
     }
 
     if (filter?.contentType) {
-      whereClause.attachments = { type: filter.contentType };
+      whereClause.attachments = {
+        type: In(contentTypeMapping[filter.contentType]),
+      };
     }
 
     if (filter?.reactionCount) {

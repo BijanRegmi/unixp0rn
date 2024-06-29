@@ -1,5 +1,3 @@
-import { ContentType } from './raw.types';
-
 export type SortOrder = 'ASC' | 'DESC';
 
 export type SortFields = 'Reaction_Count' | 'Timestamp';
@@ -27,7 +25,7 @@ export interface ListFilter {
   authorId?: string;
   content?: string;
   reactionCount?: NumberFilter;
-  contentType?: ContentType;
+  contentType?: 'video' | 'image';
 }
 
 export interface ListBodyDto {
