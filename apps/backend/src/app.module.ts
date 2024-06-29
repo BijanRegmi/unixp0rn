@@ -19,7 +19,6 @@ import { join } from 'path';
       useFactory: (configService: ConfigService<AppConfig, true>) => {
         const url = configService.get('dbUrl');
         const ssl = configService.get('dbSsl');
-        console.log('=======================', url);
         return {
           type: 'postgres',
           synchronize: true,

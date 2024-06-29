@@ -10,7 +10,15 @@
       ]
     },
     "start": {
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "env": [
+        "DATABASE_URL",
+        "TOKEN",
+        "DATA_URL",
+        "IMAGE_URL",
+        "DATABASE_SSL",
+        "PORT"
+      ]
     },
     "dev": {
       "dependsOn": ["@unixp0rn/types#build"],
