@@ -29,4 +29,4 @@ import { ScheduleModule } from '@nestjs/schedule';
   controllers: [AppController],
   providers: [AppService, PopulateService],
 })
-export class AppModule {}
+export class AppModule { }

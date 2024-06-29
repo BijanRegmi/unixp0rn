@@ -67,10 +67,14 @@ export class AppService {
       }
     }
 
+    if (filter?.authorName) {
+      whereClause.author = { username: ILike(`%${filter.authorName}%`) };
+    }
+
     const entries = await this.dataSource.getRepository(Entry).find({
       where: whereClause,
-      skip: options.skip,
-      take: options.take,
+      skip: options.skip || 0,
+      take: options.take || 10,
       order: !sort
         ? undefined
         : sort?.field === 'Reaction_Count'

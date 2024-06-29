@@ -23,6 +23,7 @@ export interface NumberFilter {
 
 export interface ListFilter {
   authorId?: string;
+  authorName?: string;
   content?: string;
   reactionCount?: NumberFilter;
   contentType?: 'video' | 'image';
