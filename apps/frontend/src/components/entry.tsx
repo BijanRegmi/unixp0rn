@@ -17,13 +17,43 @@ import {
 } from './ui/carousel';
 import { FallbackImage } from './fallback-image';
 import { Reactions } from './reactions';
+import { useAtom } from 'jotai';
+import { entriesAtom, filterAtom, pageAtom, refetchAtom } from '@/lib/states';
+import { FallbackVideo } from './fallback-video';
 
-export function Entry({ entry }: { entry: ListResponse }) {
+export function Entries() {
+  const [entries, _setEntries] = useAtom(entriesAtom);
+
   return (
-    <Card className="font-mono">
+    <div className="flex flex-col items-center justify-center h-[100%-7rem]">
+      {entries.length != 0 ? (
+        entries.map((entry) => <Entry key={entry.id} entry={entry} />)
+      ) : (
+        <h1 className="w-fit font-thin font-mono tracking-wider">
+          Nothing to display. Change the filters to see some posts.
+        </h1>
+      )}
+    </div>
+  );
+}
+
+function Entry({ entry }: { entry: ListResponse }) {
+  const [_filters, setFilter] = useAtom(filterAtom);
+  const [_refetch, setRefetch] = useAtom(refetchAtom);
+  const [_page, setPage] = useAtom(pageAtom);
+
+  return (
+    <Card className="font-mono w-full">
       <CardHeader>
         <CardTitle className="flex flex-row items-center gap-2">
-          <Avatar>
+          <Avatar
+            className="cursor-pointer border-slate-500 border-2 rounded-full"
+            onClick={() => {
+              setFilter((f) => ({ ...f, authorId: entry.authorId }));
+              setPage(0);
+              setRefetch((r) => !r);
+            }}
+          >
             <AvatarImage
               src={'https://ui-avatars.com/api/?name=' + entry.author.username}
               className="rounded-full"
@@ -46,7 +76,11 @@ export function Entry({ entry }: { entry: ListResponse }) {
           <CarouselContent>
             {entry.attachments.map((a) => (
               <CarouselItem key={a.id} className="p-4">
-                <FallbackImage src={a.url} id={a.id} />
+                {a.type.startsWith('video') ? (
+                  <FallbackVideo src={a.url} id={a.id} />
+                ) : (
+                  <FallbackImage src={a.url} id={a.id} />
+                )}
               </CarouselItem>
             ))}
           </CarouselContent>

@@ -1,40 +1,68 @@
-import { ListFilter, ListResponse, ListSort } from '@unixp0rn/types';
-import { useEffect, useState } from 'react';
+import { ListResponse } from '@unixp0rn/types';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import {
+  entriesAtom,
+  filterAtom,
+  pageAtom,
+  refetchAtom,
+  sortAtom,
+} from './states';
 
 export function useEntries() {
-  const [entries, setEntries] = useState<ListResponse[]>([]);
-  const [page, setPage] = useState<number>(0);
-  const [filters, setFilters] = useState<ListFilter | null>(null);
-  const [sort, setSort] = useState<ListSort | null>({
-    field: 'Timestamp',
-    order: 'DESC',
-  });
+  const [_entries, setEntries] = useAtom(entriesAtom);
+  const [page, setPage] = useAtom(pageAtom);
+  const [filters, _setFilters] = useAtom(filterAtom);
+  const [sort, _setSort] = useAtom(sortAtom);
+
+  const [refetchValue, setRefetch] = useAtom(refetchAtom);
 
   useEffect(() => {
     async function fn() {
       const entries: ListResponse[] = await fetch(
         'http://localhost:3000/app?' +
-        new URLSearchParams({
-          skip: (page * 10).toString(),
-          take: '10',
-          ...(sort ? { sort: JSON.stringify(sort) } : {}),
-          ...(filters ? { filter: JSON.stringify(filters) } : {}),
-        }).toString(),
+          new URLSearchParams({
+            skip: (page * 10).toString(),
+            take: '10',
+            ...(sort ? { sort: JSON.stringify(sort) } : {}),
+            ...(filters ? { filter: JSON.stringify(filters) } : {}),
+          }).toString(),
       ).then((res) => res.json());
+
+      setEntries((e) => (page == 0 ? entries : [...e, ...entries]));
+
       if (entries.length == 0) {
         setPage(-1);
       }
-      setEntries((e) => [...e, ...entries]);
     }
 
-    if (page == -1) return;
+    if (page < 0) return;
 
     fn();
-  }, []);
+  }, [page, refetchValue]);
 
   const nextPage = () => {
-    setPage((p) => p + 1);
+    setPage((p) => {
+      if (p == -2) {
+        // If initial fetch
+        return 0;
+      } else if (p == -1) {
+        // If stopped
+        return -1;
+      } else {
+        // If next page}
+        return p + 1;
+      }
+    });
   };
 
-  return { entries, page, filters, setFilters, sort, setSort, nextPage };
+  const refetch = () => {
+    setPage(0);
+    setRefetch((r) => !r);
+  };
+
+  return {
+    nextPage,
+    refetch,
+  };
 }

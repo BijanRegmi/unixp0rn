@@ -1,0 +1,10 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183.33333333333348 293.3333333333335" width="550.0000000000005" height="880.0000000000005">
+  <rect x="0" y="0" width="183.33333333333348" height="293.3333333333335" fill="#ffffff" />
+  <g stroke-linecap="round" transform="translate(10 10) rotate(0 81.66666666666674 136.66666666666674)">
+    <path d="M0 0 L163.33 0 L163.33 273.33 L0 273.33" stroke="none" stroke-width="0" fill="#ffffff" />
+    <path d="M0 0 C34.38 0, 68.75 0, 163.33 0 M0 0 C36.86 0, 73.72 0, 163.33 0 M163.33 0 C163.33 77.27, 163.33 154.55, 163.33 273.33 M163.33 0 C163.33 91.71, 163.33 183.42, 163.33 273.33 M163.33 273.33 C119.57 273.33, 75.81 273.33, 0 273.33 M163.33 273.33 C119.32 273.33, 75.3 273.33, 0 273.33 M0 273.33 C0 194.77, 0 116.2, 0 0 M0 273.33 C0 203.5, 0 133.67, 0 0" stroke="#1e1e1e" stroke-width="4" fill="none" />
+  </g>
+  <g transform="translate(26.666666666666515 50) rotate(0 64.9749984741211 114.16666666666674)">
+    <text x="0" y="160.01600000000025" font-family="Monospace" font-size="182.6666666666669px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">U</text>
+  </g>
+</svg>

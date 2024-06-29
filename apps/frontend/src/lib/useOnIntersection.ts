@@ -1,17 +1,12 @@
 import { useRef, useCallback, useEffect } from 'react';
 
-const useOnIntersection = <T extends Element>({
-  onIntersect,
-}: {
-  onIntersect: () => void;
-}) => {
+const useOnIntersection = <T extends Element>(onIntersect: () => void) => {
   const ref = useRef<T>(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries;
       if (target.isIntersecting) {
-        console.log('INTERSECTING')
         onIntersect();
       }
     },
@@ -25,7 +20,7 @@ const useOnIntersection = <T extends Element>({
     const observer = new IntersectionObserver(handleObserver, option);
     observer.observe(element);
     return () => observer.unobserve(element);
-  });
+  }, []);
 
   return ref;
 };
