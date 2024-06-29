@@ -5,7 +5,7 @@ import { Response } from 'express';
 
 @Controller('app')
 export class AppController {
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService) {}
 
   @Get()
   async list(@Query() query: ListBodyDto): Promise<ListResponse[]> {
@@ -47,6 +47,11 @@ export class AppController {
         })),
       };
     });
+  }
+
+  @Get('/ping')
+  ping() {
+    return 'ok';
   }
 
   @Get('/image')
