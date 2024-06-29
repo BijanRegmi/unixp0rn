@@ -10,7 +10,7 @@ function App() {
   const observerRef = useOnIntersection<HTMLDivElement>(nextPage);
 
   return (
-    <div className="w-screen h-screen overflow-scroll">
+    <div className="w-screen h-screen overflow-scroll no-scrollbar">
       <TitleBar>
         <Filters refetch={refetch} />
       </TitleBar>
